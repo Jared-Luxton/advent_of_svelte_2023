@@ -1,16 +1,23 @@
-import type { Results } from './model.js'
+import type { Results } from './database.js'
+import * as db from './database.js'
 
-export async function load({ fetch }) {
-    let resultsList = await fetch("https://advent.sveltesociety.dev/data/2023/day-one.json")
-    let results: Results[] = await resultsList.json()
-    results = results.map(x => {
-        let status = x.tally > 50 ? "Nice" : "Naughty"
-        return {...x, behaviorStatus: status}
-    })
-
-    console.log(results)
-
+export const load = async({ fetch }) => {
+    console.log("run load!")
     return {
-        results
+        results: db.getDatabase()
+    }
+}
+
+export const actions = {
+    createPerson: async ({ cookies, request}) => {
+        const data = await request.formData();
+        let name = String(data.get("name"))
+        let tally = Number(data.get("tally"))
+        db.createPerson(name, tally)
+    },
+
+    updateTally: async ({ cookies, request }) => {
+        const data = await request.formData();
+        db.updateTally(cookies.get("name") ?? "", Number(cookies.get("tally")))
     }
 }

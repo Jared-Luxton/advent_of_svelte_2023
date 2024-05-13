@@ -1,5 +1,7 @@
 <script lang="ts">
-    import type { Results } from "./model";
+    import type { Results } from "./database";
+    import { enhance } from "$app/forms"
+
     let { data } = $props()
     let resultsList: Results[] = $state(data.results)
 
@@ -9,45 +11,65 @@
         behaviorStatus: "Nice"
     })
 
-    let filteredResults = $derived.by(() => {
-        return resultsList.filter(x => {
-            return (x.name.toLowerCase().match(filters.name.toLowerCase()) &&
-                x.tally >= filters.tally &&
-                x.behaviorStatus == filters.behaviorStatus
-            )
-        })
-    })
+    // let filteredResults = $derived.by(() => {
+    //     return resultsList.filter(x => {
+    //         return (x.name.toLowerCase().match(filters.name.toLowerCase()) &&
+    //             x.tally >= filters.tally &&
+    //             x.behaviorStatus == filters.behaviorStatus
+    //         )
+    //     })
+    // })
 
     $inspect(
-        filteredResults,
-        filters
+        resultsList
+        // filteredResults,
+        // filters
     )
 </script>
 
 <div class="page-layout">
+    <button onclick={() => console.log(data.results)}>Show Data</button>
     <h1>Day 1 - Naughty or Nice</h1>
-    <h3>Filters</h3>
-    <div class="filters">
-        <label>
-            Name
-            <input type="text" name="name" bind:value={filters.name}/>
-        </label>
-        <label>
-            Tally
-            <input type="number" name="tally" bind:value={filters.tally}/>
-        </label>
-        <fieldset>
-            <legend>Behavior status</legend>
-            <label>
-                <input type="radio" name="behaviorStatus" bind:group={filters.behaviorStatus} value={"Naughty"}/>
-                Naughty
-            </label>
-            <label>
-                <input type="radio" name="behaviorStatus" bind:group={filters.behaviorStatus} value={"Nice"} />
-                Nice
-            </label>
 
-        </fieldset>
+    <div class="top-menu">
+        <h3>Filters</h3>
+        <div class="filters">
+            <label>
+                Name
+                <input type="text" name="name" bind:value={filters.name}/>
+            </label>
+            <label>
+                Tally
+                <input type="number" name="tally" bind:value={filters.tally}/>
+            </label>
+            <fieldset>
+                <legend>Behavior status</legend>
+                <label>
+                    <input type="radio" name="behaviorStatus" bind:group={filters.behaviorStatus} value={"Naughty"} />
+                    Naughty
+                </label>
+                <label>
+                    <input type="radio" name="behaviorStatus" bind:group={filters.behaviorStatus} value={"Nice"} />
+                    Nice
+                </label>
+            </fieldset>
+        </div>
+        <h3>Create</h3>
+            <form class="create-person" use:enhance method="POST" action="?/createPerson">
+                <label>
+                    Name
+                    <input type="text" name="name" />
+                </label>
+                <label>
+                    Tally
+                    <input type="number" name="tally" />
+                </label>
+                <label>
+                    Behavior status
+                    <input type="string" name="behaviorStatus" disabled/>
+                </label>
+                <button type="submit">Submit</button>
+            </form>
     </div>
 
     <table class="striped">
@@ -59,7 +81,7 @@
             </tr>
         </thead>
         <tbody>
-            {#each filteredResults as res}
+            {#each resultsList as res}
                 <tr>
                     <th scope="row">{res.name}</th>
                     <td>{res.tally}</td>
@@ -77,7 +99,18 @@
         row-gap: 1rem;
     }
 
+    .top-menu {
+        display: grid;
+    }
+
     .filters {
+        display: flex;
+        flex-direction: row;
+        justify-content: right;
+        gap: 2rem;
+    }
+
+    .create-person {
         display: flex;
         flex-direction: row;
         gap: 2rem;
