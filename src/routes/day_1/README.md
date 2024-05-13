@@ -1,6 +1,11 @@
 # DESIGN
-- 
-- 
+- Import data by fetch
+    - Create, read, update
+- Database storage 
+    - SQLite
+- Automatic naughty/nice identification by tally score
+- Appealing styling
+    - Pico
 
 # Day 1 - Naughty or Nice
 # OBJECTIVE
