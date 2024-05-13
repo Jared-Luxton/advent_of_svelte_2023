@@ -5,7 +5,7 @@ export type Results = {
 }
 
 const calculateBehaviorStatus = (tally: number) => {
-    return tally > 50 ? "Nice" : "Naughty"
+    return tally > 0 ? "Nice" : "Naughty"
 }
 
 export const fetchData = async() => {
@@ -21,18 +21,9 @@ export const fetchData = async() => {
     return results
 }
 
-// let db = await fetchData()
-let db = [
-    { name: 'Lilly', tally: -86, behaviorStatus: 'Naughty' },
-    { name: 'Bethel', tally: 58, behaviorStatus: 'Nice' },
-    { name: 'Vada', tally: -88, behaviorStatus: 'Naughty' },
-]
-
-let version = 0
+let db = await fetchData()
 
 export function getDatabase() {
-    version += 1
-    console.log("getting data!", db, Date.now(), version)
     return db.sort((a, b) => a.name.localeCompare(b.name));
 }
 
@@ -44,15 +35,11 @@ export function createPerson(name: string, tally: number) {
     }
 
     db.push(newPerson)
-
-    // console.log(
-    //     db.filter(x => x.name === name),
-    //     "hello",
-    //     db
-    // )
 }
 
-export function updateTally(name: string, tally: number) {
+export function updatePerson(name: string, tally: number) {
     let person = db.filter(x => x.name === name)[0]
+    person.name = name
     person.tally = tally
+    person.behaviorStatus = calculateBehaviorStatus(tally)
 }
