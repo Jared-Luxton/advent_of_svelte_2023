@@ -26,20 +26,7 @@
         const filtersList = [matchName, greaterThan, matchStatus]
 
         return filtersList.reduce((resultsList, f) => resultsList.filter(f), resultsList)
-
-        // return resultsList.filter(x => {
-        //     return (x.name.toLowerCase().match(filters.name.toLowerCase()) &&
-        //         x.tally >= filters.tally &&
-        //         x.behaviorStatus == filters.behaviorStatus
-        //     )
-        // })
     })
-
-    // $inspect(
-        // resultsList
-        // filteredResults,
-        // filters
-    // )
 </script>
 
 <div class="page-layout">
