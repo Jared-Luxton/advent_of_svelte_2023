@@ -6,7 +6,7 @@
 </script>
 
 <div class="edit-layout">
-    <a href="http://localhost:5173/day_1">Day 1</a>
+    <a href="/day_1">Day 1</a>
     <h3>Edit</h3>
     <form class="edit-person" use:enhance method="POST" action="?/updatePerson">
         <label>
